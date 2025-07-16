@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Product</h1>
+        <form action="/products/edit/<%= product.id %>" method="POST">
+            <input type="text" name="name" value="<%= product.name %>" required />
+            <input type="number" name="price" value="<%= product.price %>" required />
+            <button type="submit">Update Product</button>
+        </form>
+        <a href="/products/list">Back to List</a>
+    </div>
+</body>
+</html>

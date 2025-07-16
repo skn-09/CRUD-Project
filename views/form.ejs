@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Product</h1>
+        <form action="/products/add" method="POST">
+            <input type="text" name="name" placeholder="Product Name" required />
+            <input type="number" name="price" placeholder="Price ₹" required />
+            <button type="submit">Add Product</button>
+        </form>
+        <a href="/products/list">View All Products</a>
+    </div>
+</body>
+</html>

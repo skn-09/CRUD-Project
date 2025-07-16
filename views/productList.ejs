@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Product List</h1>
+        <a href="/products/add">+ Add New Product</a>
+        <ul>
+            <% products.forEach(p => { %>
+                <li>
+                    <div><b><%= p.name %></b> - ₹<%= p.price %></div>
+                    <div>
+                        <form action="/products/delete/<%= p.id %>" method="POST" style="display:inline;">
+                            <button style="background-color:#dc3545;">Delete</button>
+                        </form>
+                        <a href="/products/edit/<%= p.id %>">Edit</a>
+                    </div>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</body>
+</html>
