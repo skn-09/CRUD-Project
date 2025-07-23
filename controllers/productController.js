@@ -1,3 +1,5 @@
+//************************** Using Array *************************
+
 // let products=[];
 
 // exports.createProduct = (req,res,next) => {
@@ -36,41 +38,106 @@
 // };
 
 
+
+
+
+// ************************ Using Mongoose (Backend Connectivity) ******************************
+// ########### Using Promise #############
+
+// const Product = require('../models/product');
+
+// exports.getForm = (req, res) => {
+//     res.render('form', { pageTitle: 'Add Product' });
+// };
+
+// exports.createProduct = (req, res) => {
+//     const { name, price } = req.body;
+//     const product = new Product({ name, price });
+//     product.save()
+//         .then(() => res.redirect('/products/list'))
+//         .catch(err => console.log(err));
+// };
+
+// exports.getProducts = (req, res) => {
+//     Product.find()
+//         .then(products => res.render('productList', { products, pageTitle: 'Product List' }))
+//         .catch(err => console.log(err));
+// };
+
+// exports.getEditForm = (req, res) => {
+//     Product.findById(req.params.id)
+//         .then(product => res.render('editProduct', { product, pageTitle: 'Edit Product' }))
+//         .catch(err => console.log(err));
+// };
+
+// exports.updateProduct = (req, res) => {
+//     const { name, price } = req.body;
+//     Product.findByIdAndUpdate(req.params.id, { name, price })
+//         .then(() => res.redirect('/products/list'))
+//         .catch(err => console.log(err));
+// };
+
+// exports.deleteProduct = (req, res) => {
+//     Product.findByIdAndDelete(req.params.id)
+//         .then(() => res.redirect('/products/list'))
+//         .catch(err => console.log(err));
+// };
+
+
+
+
+
+// ******************************** Using Async Await ********************************
 const Product = require('../models/product');
 
 exports.getForm = (req, res) => {
     res.render('form', { pageTitle: 'Add Product' });
 };
 
-exports.createProduct = (req, res) => {
+exports.createProduct = async (req, res) => {
     const { name, price } = req.body;
-    const product = new Product({ name, price });
-    product.save()
-        .then(() => res.redirect('/products/list'))
-        .catch(err => console.log(err));
+    try {
+        const product = new Product({ name, price });
+        await product.save();
+        res.redirect('/products/list');
+    } catch (err) {
+        console.log(err);
+    }
 };
 
-exports.getProducts = (req, res) => {
-    Product.find()
-        .then(products => res.render('productList', { products, pageTitle: 'Product List' }))
-        .catch(err => console.log(err));
+exports.getProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+        res.render('productList', { products, pageTitle: 'Product List' });
+    } catch (err) {
+        console.log(err);
+    }
 };
 
-exports.getEditForm = (req, res) => {
-    Product.findById(req.params.id)
-        .then(product => res.render('editProduct', { product, pageTitle: 'Edit Product' }))
-        .catch(err => console.log(err));
+exports.getEditForm = async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        res.render('editProduct', { product, pageTitle: 'Edit Product' });
+    } catch (err) {
+        console.log(err);
+    }
 };
 
-exports.updateProduct = (req, res) => {
+exports.updateProduct = async (req, res) => {
     const { name, price } = req.body;
-    Product.findByIdAndUpdate(req.params.id, { name, price })
-        .then(() => res.redirect('/products/list'))
-        .catch(err => console.log(err));
+    try {
+        await Product.findByIdAndUpdate(req.params.id, { name, price });
+        res.redirect('/products/list');
+    } catch (err) {
+        console.log(err);
+    }
 };
 
-exports.deleteProduct = (req, res) => {
-    Product.findByIdAndDelete(req.params.id)
-        .then(() => res.redirect('/products/list'))
-        .catch(err => console.log(err));
+exports.deleteProduct = async (req, res) => {
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        res.redirect('/products/list');
+    } catch (err) {
+        console.log(err);
+    }
 };
