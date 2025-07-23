@@ -15,6 +15,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const mongoose = require('mongoose');
 
 const productRoutes = require('./routes/productRoutes');
 
@@ -32,6 +33,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Routes
 app.use('/products', productRoutes);
 
-app.listen(3000, () => {
-    console.log('Server running at localhost:3000');
-});
+mongoose.connect('mongodb+srv://nikamsnehal0903:root@cluster1.rimnwbb.mongodb.net/crud?retryWrites=true&w=majority&appName=Cluster1')
+    .then(() => {
+        app.listen(3000, () => 
+            console.log('Server running on server 3000'));
+    })
+    .catch(err => console.log(err));

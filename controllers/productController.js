@@ -36,7 +36,7 @@
 // };
 
 
-let products = [];
+const Product = require('../models/product');
 
 exports.getForm = (req, res) => {
     res.render('form', { pageTitle: 'Add Product' });
@@ -44,32 +44,33 @@ exports.getForm = (req, res) => {
 
 exports.createProduct = (req, res) => {
     const { name, price } = req.body;
-    const newProduct = { id: Date.now().toString(), name, price };
-    products.push(newProduct);
-    res.redirect('/products/list');
+    const product = new Product({ name, price });
+    product.save()
+        .then(() => res.redirect('/products/list'))
+        .catch(err => console.log(err));
 };
 
 exports.getProducts = (req, res) => {
-    res.render('productList', { products, pageTitle: 'Product List' });
+    Product.find()
+        .then(products => res.render('productList', { products, pageTitle: 'Product List' }))
+        .catch(err => console.log(err));
 };
 
 exports.getEditForm = (req, res) => {
-    const product = products.find(p => p.id === req.params.id);
-    if (!product) return res.send('Product Not Found');
-    res.render('editProduct', { product, pageTitle: 'Edit Product' });
+    Product.findById(req.params.id)
+        .then(product => res.render('editProduct', { product, pageTitle: 'Edit Product' }))
+        .catch(err => console.log(err));
 };
 
 exports.updateProduct = (req, res) => {
     const { name, price } = req.body;
-    const product = products.find(p => p.id === req.params.id);
-    if (product) {
-        product.name = name;
-        product.price = price;
-    }
-    res.redirect('/products/list');
+    Product.findByIdAndUpdate(req.params.id, { name, price })
+        .then(() => res.redirect('/products/list'))
+        .catch(err => console.log(err));
 };
 
 exports.deleteProduct = (req, res) => {
-    products = products.filter(p => p.id !== req.params.id);
-    res.redirect('/products/list');
+    Product.findByIdAndDelete(req.params.id)
+        .then(() => res.redirect('/products/list'))
+        .catch(err => console.log(err));
 };
